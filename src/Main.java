@@ -1,39 +1,40 @@
-import java.util.Arrays;
-
 class Solution {
-    public int breakfastNumber(int[] staple, int[] drinks, int x) {
-        final int mod = 1000000007;
-        int[] cnt = new int[x + 1];
-        Arrays.fill(cnt, 0);
-        for (int i : staple) {
-            if (i <= x) {
-                cnt[i]++;
-                if (cnt[i] > mod) {
-                    cnt[i] %= mod;
-                }
-            }
+    public boolean evaluateTree(TreeNode root) {
+        if (root.val == 0) {
+            return false;
         }
 
-        for (int i = 1; i < cnt.length; i++) {
-            cnt[i] += cnt[i - 1];
-            if (cnt[i] > mod) {
-                cnt[i] %= mod;
-            }
+        if (root.val == 1) {
+            return true;
         }
 
-        int result = 0;
-        for (int i : drinks) {
-            if (x - i >= 0) {
-                result += cnt[x - i];
-            }
-
-            if (result > mod) {
-                result %= mod;
-            }
+        if (root.val == 2) {
+            return evaluateTree(root.left) || evaluateTree(root.right);
         }
 
-        return result;
+        if (root.val == 3) {
+            return evaluateTree(root.left) && evaluateTree(root.right);
+        }
 
+        return false;
+    }
+}
 
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {
+    }
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
     }
 }
